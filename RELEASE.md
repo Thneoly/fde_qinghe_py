@@ -1,5 +1,39 @@
 # W1 发布说明 · 0.2.0-w1
 
+## 2026-10-20 学员 W01 提交记录（fde_qinghe_py）
+
+本记录是学员在官方发布包基础上完成的 W01 提交记录，不是课程方原始发布说明；官方修订记录保留在下方。
+
+- 仓库：https://github.com/Thneoly/fde_qinghe_py
+- 产品/契约：`0.2.0-w1`；fit-gap `w01-0.2.1`，其余三份 JSON `w01-0.2.0`；能力矩阵 `w1-capabilities-0.2.0`
+- 模型：`deepseek-v4.1-flash`，Anthropic Messages 兼容端点 `https://ark.cn-beijing.volces.com/api/coding`
+- 运行环境：Python 3.14.4、Node.js 24.10.0、Promptfoo 0.122.2、Windows 11
+
+### 本次改动
+
+- 新增 `AnthropicModel` 与 `create_model()`（`platform/fde_product/models.py`）；`product.py`、`verify_product.py`、`evals/provider.py` 按 `FDE_MODEL_PROTOCOL` 选择适配器；`model_baseline.protocol` 写实际协议 `anthropic_messages`。
+- 新增 `.env` 本地配置与 `python-dotenv==1.2.4`：入口脚本加载 `.env`，显式环境变量优先；`.env` 不提交，`.env.example` 提供模板。
+- Windows 下 Promptfoo provider 的 Python 路径改为 `../.venv/Scripts/python.exe`；中文路径需设置 `PYTHONUTF8=1`。
+- 复制 `07_fit_gap_to_json.py` 到 `tools/`；新增 `docs/w01/implementation_notes.md`、访谈记录、fit-gap 填写稿与立项报告。
+- 删除 `uv init` 生成的 `main.py` 占位；扩充 `.gitignore`，排除 `.venv`、`.runtime`、缓存、SQLite、日志和密钥。
+
+### 验证结果（本机）
+
+- `environment_check.json`：9/9 pass，`model_mode=live`
+- `verify_product.py --live`：11/11 PASS
+- Promptfoo：7/7 PASS
+- `model_baseline.json`：9 次真实运行，0 失败
+- `runtime_evidence.json`：11 个 case 全部 passed
+- `check_product.py --root .`：pass，`errors: []`
+- `pytest`：50 passed
+
+### 证据与边界
+
+- 样例为独立虚构的“松果生活”：9 名会员、14 条订单、3 家门店、2026 年 7–8 月；S03 的 8 月无覆盖。
+- `analysis.json` 与 `refund_explanation.json` 是同一次运行的相同证据（同 SHA-256/trace_id），不是两次独立运行；11 个 case = 9 次模型运行 + 2 项 HTTP 账本检查。
+- 证据只覆盖本机样例与单一模型，不代表青禾数据、其他模型或生产环境；真实客户数据未进入仓库。
+- 端点在高频调用后曾返回 `MODEL_HTTP_429`，等待约 60 秒后恢复；Promptfoo 使用 `-j 1` 降低并发。
+
 ## 2026-09-22 模型调用恢复修订
 
 文件名及产品契约保持，运行时修订为 `w01-runtime-20260922`。模型调用默认 8192 token／90 秒；确认输出预算截断后，同一请求最多以 16384 token／180 秒重试一次，后续恢复默认。保存结束原因、追踪编号和每次已知用量；截断结果不会进入工具执行。模型参数、其他供应商适配与 W02 记录兼容见 [配置说明](docs/model-configuration.md)。验证结果由课程方按本次 ZIP 摘要单独登记，历史测试不冒充本次验收。

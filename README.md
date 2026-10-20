@@ -1,6 +1,6 @@
 # W1 标准会员运营 Agent
 
-产品 `0.2.0-w1`，能力矩阵 `w1-capabilities-0.2.0`，作业契约 `w01-0.2.0`。这是可运行、源码可读的本地教学产品。它在独立虚构的松果生活数据上完成会员消费比较、召回建议和证据说明，并通过独立 HTTP 标签系统演示受控动作。青禾数据、客户连接器和生产治理需后续开发。
+产品 `0.2.0-w1`，能力矩阵 `w1-capabilities-0.2.0`；作业契约：fit-gap `w01-0.2.1`，其余三份 JSON `w01-0.2.0`。这是可运行、源码可读的本地教学产品。它在独立虚构的松果生活数据上完成会员消费比较、召回建议和证据说明，并通过独立 HTTP 标签系统演示受控动作。青禾数据、客户连接器和生产治理需后续开发。
 
 fit-gap 用于 W01 初步判断；分类依据不足可写“待判断”，并说明核实对象、所需证据和下一步。fit-gap 使用 `w01-0.2.1`，兼容原 `w01-0.2.0` 的五类作业；其余三份 JSON 仍为 `w01-0.2.0`。产品版本与能力矩阵保持。后续保留 W01 提交版、沿用编号按证据修订。填写、转换及分周保存方法见课程材料包作业任务书。
 
@@ -8,6 +8,22 @@ fit-gap 用于 W01 初步判断；分类依据不足可写“待判断”，并�
 日期支持方案按钮和“按第一个方案”；拒绝标签草案后可在同一任务提出新要求；金额、订单笔数和退款说明由工具结果生成。
 
 模型调用支持输出截断识别、一次扩容重试及追踪信息；模型配置和 W02 推理续接说明见 [模型配置与恢复](docs/model-configuration.md)。
+
+## W01 提交概况
+
+- **仓库**：https://github.com/Thneoly/fde_qinghe_py
+- **实现路线**：官方标准产品（Python），新增 Anthropic Messages 适配器
+- **模型**：`deepseek-v4.1-flash`，端点 `https://ark.cn-beijing.volces.com/api/coding`
+- **运行环境**：Python 3.14.4、Node.js 24.10.0、Promptfoo 0.122.2、Windows 11
+- **验收结果**：`environment_check` 9/9 pass；`verify_product.py --live` 11/11；Promptfoo 7/7；`check_product.py --root .` pass；`pytest` 50 passed
+- **交付物**：
+  - `artifacts/w01/environment_check.json`
+  - `artifacts/w01/product_fit_gap.json`（5 条，契约 `w01-0.2.1`）
+  - `artifacts/w01/model_baseline.json`（9 次真实运行，0 失败）
+  - `artifacts/w01/runtime_evidence.json`（11 个 case 全部 passed）
+  - `docs/w01/project_assessment.md`（结论：带条件继续）
+  - `docs/w01/implementation_notes.md`（适配、复现与证据边界）
+  - `docs/w01/interview_shen_20261020.md` 与 `docs/w01/interviews/`（沈总访谈）
 
 ## 1. 安装与运行
 
@@ -22,9 +38,19 @@ python3 -m venv .venv
 .venv/bin/python tools/check_product.py --dry-run
 ```
 
-Windows 使用 `python -m venv .venv`，其余命令将 `.venv/bin/python` 换成 `.venv\Scripts\python.exe`。无需修改 PowerShell 执行策略。Windows、Linux 如遇问题，请反馈给课程方。
+Windows 使用 `python -m venv .venv`，其余命令将 `.venv/bin/python` 换成 `.venv\Scripts\python.exe`。无需修改 PowerShell 执行策略。Windows 路径含中文时，先执行 `$env:PYTHONUTF8="1"`；否则读取 `sample_data/` 可能因 GBK 解码失败。Windows、Linux 如遇问题，请反馈给课程方。
 
 配置自己的模型：`FDE_MODEL_URL`、`FDE_MODEL_NAME`、`FDE_MODEL_KEY`；Anthropic Messages 兼容端点另设 `FDE_MODEL_PROTOCOL=anthropic`。显式环境变量优先；本地开发也可在工程根目录放置 `.env`（参考 `.env.example`，不要提交），入口脚本会通过 `python-dotenv` 加载。程序不尝试其他供应商、不跟随重定向、不打印密钥。教师配置不在本包中。模型适配器位于 `platform/fde_product/models.py`；不同协议通过适配器处理。
+
+本次使用的 `.env` 示例（将 `replace-with-your-key` 换成自己的密钥）：
+
+```dotenv
+FDE_MODEL_PROTOCOL=anthropic
+FDE_MODEL_URL=https://ark.cn-beijing.volces.com/api/coding
+FDE_MODEL_NAME=deepseek-v4.1-flash
+FDE_MODEL_KEY=replace-with-your-key
+FDE_MODEL_TIMEOUT=90
+```
 
 ```sh
 .venv/bin/python tools/product.py start --actions
@@ -59,6 +85,8 @@ Windows 使用 `python -m venv .venv`，其余命令将 `.venv/bin/python` 换�
 
 该命令实际调用你的模型，并启动独立的临时端口标签系统，测试原有分析、澄清、缺数据、只读、HTTP 动作、幂等和撤销，并增加退款说明、文字选择日期、按钮选择日期、拒绝后更换目标，共 11 项；生成环境、模型基线、运行证据及 trace。验证动作只操作独立教学数据库。复测前先备份 `artifacts/w01/` 中的上一轮证据，或另解压一份工程再运行；`--home` 只改变运行数据库位置，不改变证据输出目录。
 
+本次 W01 实际结果：11 项全部 PASS；`model_baseline.json` 记录 9 次模型运行、0 失败；`runtime_evidence.json` 记录 11 个 case、全部 passed。
+
 基础评估默认 Promptfoo 0.122.2，需要 Node.js 22.22.0 或更高版本；macOS 需要 12 或更高版本，macOS 11 的安装方法见 `evals/README.md`。从 `evals/` 按 `evals/README.md` 执行评估，完成后回到工程根目录：
 
 ```sh
@@ -67,6 +95,8 @@ Windows 使用 `python -m venv .venv`，其余命令将 `.venv/bin/python` 换�
 ```
 
 自行填写 `artifacts/w01/product_fit_gap.json` 与 `docs/w01/project_assessment.md`。检查器要求四份 JSON、立项报告和所引用证据，初始包不预填答案或教师运行结果。结构检查和哈希校验不代替真实行为重跑与人工 rubric。
+
+本次交付：`artifacts/w01/product_fit_gap.json`（5 条）、`docs/w01/project_assessment.md`、`docs/w01/implementation_notes.md`、`docs/w01/interview_shen_20261020.md`；Promptfoo 7/7 通过。
 
 回归测试：`.venv/bin/python -m pytest tests/test_product_v2.py tests/test_product_interaction.py`。固定回复用于验证确定性机制，测试通过不能代替真实模型验证。
 
@@ -81,6 +111,8 @@ LangGraph 图、工具分发与输出处理在 `agent.py`；样例数据和可�
 ## 5. 边界与数据保存
 
 本产品只绑定本机地址，用于单人教学。基础角色是主机配置，不是生产认证或多租户隔离。分析库、checkpoint、动作账本、标签系统各自保存状态；公开运行记录不导出私有推理内容或密钥。W1 只提供本地 OTel 记录和可选 OTLP 接口，完整 Langfuse 客户环境与发布治理属于 W9。
+
+本次验证边界：证据只覆盖本机虚构样例与单一模型 `deepseek-v4.1-flash`，不代表青禾数据、其他模型或生产环境；`analysis.json` 与 `refund_explanation.json` 是同一次运行的同一证据（同 SHA/trace_id），不是两次独立运行。
 
 要回到全新演示状态，请使用新的 `--home` 目录，避免删除旧证据。`init` 会在指定样例库中重新导入样例，不对客户库使用。当前撤销只支持标签 Mock 契约，结果未知先查询，不承诺任意业务动作可以回滚。
 
