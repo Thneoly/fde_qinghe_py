@@ -7,7 +7,7 @@
 - 仓库：https://github.com/Thneoly/fde_qinghe_py
 - 产品/契约：`0.2.0-w1`；fit-gap `w01-0.2.1`，其余三份 JSON `w01-0.2.0`；能力矩阵 `w1-capabilities-0.2.0`
 - 模型：`deepseek-v4.1-flash`，Anthropic Messages 兼容端点 `https://ark.cn-beijing.volces.com/api/coding`
-- 运行环境：Python 3.14.4、Node.js 24.10.0、Promptfoo 0.122.2、Windows 11
+- 运行环境：uv 0.11.8、Python 3.14.4、Node.js 24.10.0、Promptfoo 0.122.2、Windows 11
 
 ### 本次改动
 

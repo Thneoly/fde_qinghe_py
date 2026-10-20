@@ -29,7 +29,7 @@
 
 ## 2. 环境
 
-- Python 3.14.4（工程 `.venv`）
+- uv 0.11.8；Python 3.14.4（uv 管理的工程 `.venv`）
 - Node.js 24.10.0；Promptfoo 0.122.2
 - Windows 11；路径含中文，因此所有 Python 命令需设置 `PYTHONUTF8=1`，否则读取样例 CSV 会因 GBK 解码失败
 - `python-dotenv==1.2.4`：入口脚本读取工程根目录 `.env`；显式环境变量优先
@@ -47,16 +47,17 @@ $env:PYTHONUTF8="1"
 # $env:FDE_MODEL_NAME="deepseek-v4.1-flash"
 # $env:FDE_MODEL_KEY="<your-key>"   # 只放在当前终端，不写文件
 
-.venv\Scripts\python.exe tools/product.py init
-.venv\Scripts\python.exe tools/check_product.py --dry-run
-.venv\Scripts\python.exe tools/verify_product.py --live --root .
+uv sync --frozen
+uv run python tools/product.py init
+uv run python tools/check_product.py --dry-run
+uv run python tools/verify_product.py --live --root .
 
 cd evals
-npx --yes promptfoo@0.122.2 eval --config promptfooconfig.yaml --no-cache --output ../artifacts/w01/promptfoo-results.json
+npx --yes promptfoo@0.122.2 eval --config promptfooconfig.yaml --no-cache -j 1 --output ../artifacts/w01/promptfoo-results.json
 cd ..
 
-.venv\Scripts\python.exe tools/finalize_evaluation.py
-.venv\Scripts\python.exe tools/check_product.py --root .
+uv run python tools/finalize_evaluation.py
+uv run python tools/check_product.py --root .
 ```
 
 复测前先备份 `artifacts/w01/`；`verify_product.py` 会重写证据文件，且动作验证只操作独立教学数据库。

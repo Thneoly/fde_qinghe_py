@@ -1,6 +1,12 @@
 # W1 基础评估与调优
 
-默认使用 Promptfoo 调用真正的产品入口。配置好自己的 `FDE_MODEL_URL`、`FDE_MODEL_KEY`、`FDE_MODEL_NAME`，安装 Node.js 22.22.0 或更高版本，从 `evals/` 执行 `npx --yes promptfoo@0.122.2 eval --config promptfooconfig.yaml --no-cache --output ../artifacts/w01/promptfoo-results.json`。Python 路径按自己的虚拟环境调整；Windows 使用 `.venv/Scripts/python.exe`。发布包记录实际验证过的 Promptfoo 版本。
+默认使用 Promptfoo 调用真正的产品入口。先在工程根目录执行 `uv sync --frozen` 安装 Python 依赖，并配置好自己的 `FDE_MODEL_URL`、`FDE_MODEL_KEY`、`FDE_MODEL_NAME`（也可以使用 `.env`）。安装 Node.js 22.22.0 或更高版本，从 `evals/` 执行：
+
+```sh
+npx --yes promptfoo@0.122.2 eval --config promptfooconfig.yaml --no-cache -j 1 --output ../artifacts/w01/promptfoo-results.json
+```
+
+`-j 1` 串行执行，避免模型端点限流。`evals/promptfooconfig.yaml` 的 provider Python 路径当前为 Windows 的 `../.venv/Scripts/python.exe`；macOS/Linux 请改为 `../.venv/bin/python`。发布包记录实际验证过的 Promptfoo 版本。
 
 Promptfoo 0.122.2 依赖的 esbuild 0.28.2 需要 macOS 12 或更高版本。在 macOS 11 上，`npx` 会因 esbuild 安装失败而直接退出，不打印原因。这时在工程目录之外本地安装，并把 esbuild 固定为 0.25.12：
 

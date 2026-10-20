@@ -14,7 +14,7 @@ fit-gap 用于 W01 初步判断；分类依据不足可写“待判断”，并�
 - **仓库**：https://github.com/Thneoly/fde_qinghe_py
 - **实现路线**：官方标准产品（Python），新增 Anthropic Messages 适配器
 - **模型**：`deepseek-v4.1-flash`，端点 `https://ark.cn-beijing.volces.com/api/coding`
-- **运行环境**：Python 3.14.4、Node.js 24.10.0、Promptfoo 0.122.2、Windows 11
+- **运行环境**：uv 0.11.8、Python 3.14.4、Node.js 24.10.0、Promptfoo 0.122.2、Windows 11
 - **验收结果**：`environment_check` 9/9 pass；`verify_product.py --live` 11/11；Promptfoo 7/7；`check_product.py --root .` pass；`pytest` 50 passed
 - **交付物**：
   - `artifacts/w01/environment_check.json`
@@ -27,18 +27,17 @@ fit-gap 用于 W01 初步判断；分类依据不足可写“待判断”，并�
 
 ## 1. 安装与运行
 
-使用 Python 3.11+。SQLite 随 Python 提供。首次安装需要下载依赖；不用 Docker。
+使用 Python 3.14（见 `.python-version`；`pyproject.toml` 要求 `>=3.14`）。SQLite 随 Python 提供。依赖由 uv 管理；首次安装会下载依赖，不用 Docker。
 
-macOS/Linux，在解压目录执行：
+在解压目录执行（macOS/Linux/Windows 相同）：
 
 ```sh
-python3 -m venv .venv
-.venv/bin/python -m pip --isolated install -r requirements.txt
-.venv/bin/python tools/product.py init
-.venv/bin/python tools/check_product.py --dry-run
+uv sync --frozen
+uv run python tools/product.py init
+uv run python tools/check_product.py --dry-run
 ```
 
-Windows 使用 `python -m venv .venv`，其余命令将 `.venv/bin/python` 换成 `.venv\Scripts\python.exe`。无需修改 PowerShell 执行策略。Windows 路径含中文时，先执行 `$env:PYTHONUTF8="1"`；否则读取 `sample_data/` 可能因 GBK 解码失败。Windows、Linux 如遇问题，请反馈给课程方。
+`uv sync --frozen` 按 `uv.lock` 安装固定依赖，`uv run` 自动使用项目 `.venv`。本仓库的安装、运行和验收均使用 uv；`requirements.txt` 作为依赖清单保留。Windows 无需修改 PowerShell 执行策略；路径含中文时，先执行 `$env:PYTHONUTF8="1"`，否则读取 `sample_data/` 可能因 GBK 解码失败。Windows、Linux 如遇问题，请反馈给课程方。
 
 配置自己的模型：`FDE_MODEL_URL`、`FDE_MODEL_NAME`、`FDE_MODEL_KEY`；Anthropic Messages 兼容端点另设 `FDE_MODEL_PROTOCOL=anthropic`。显式环境变量优先；本地开发也可在工程根目录放置 `.env`（参考 `.env.example`，不要提交），入口脚本会通过 `python-dotenv` 加载。程序不尝试其他供应商、不跟随重定向、不打印密钥。教师配置不在本包中。模型适配器位于 `platform/fde_product/models.py`；不同协议通过适配器处理。
 
@@ -53,17 +52,17 @@ FDE_MODEL_TIMEOUT=90
 ```
 
 ```sh
-.venv/bin/python tools/product.py start --actions
+uv run python tools/product.py start --actions
 ```
 
 这个入口在首次运行时初始化样例，启动两个独立 HTTP 服务：产品页面默认 `http://127.0.0.1:8765`，标签 Mock 使用自动分配的端口并在终端显示。状态保存在 `.runtime/product/`，重启不会清空。端口冲突可加 `--port 0` 使用空闲端口。分析模式默认不调用动作，页面勾选样例动作模式后也必须逐项确认。
 
-需要分别启动时，在两个终端运行 `tools/product.py mock` 和 `tools/product.py serve --actions`；默认标签端口为 8766。自定义端口后用 `FDE_MOCK_URL` 明确配置产品。公共教学凭据默认 `training-demo-token`，可以用 `FDE_MOCK_TOKEN` 同时配置两端；它不用于客户生产认证。
+需要分别启动时，在两个终端运行 `uv run python tools/product.py mock` 和 `uv run python tools/product.py serve --actions`；默认标签端口为 8766。自定义端口后用 `FDE_MOCK_URL` 明确配置产品。公共教学凭据默认 `training-demo-token`，可以用 `FDE_MOCK_TOKEN` 同时配置两端；它不用于客户生产认证。
 
 命令行也可运行：
 
 ```sh
-.venv/bin/python tools/product.py run --text '比较 2026 年 7 月和 8 月的老会员净消费，找出下降至少 20% 的会员，给出召回建议和依据。'
+uv run python tools/product.py run --text '比较 2026 年 7 月和 8 月的老会员净消费，找出下降至少 20% 的会员，给出召回建议和依据。'
 ```
 
 标签请求加 `--actions`。收到 awaiting_approval 后，保留返回的 session_id 与 draft_hash，用同一 `--session`、`--actions` 和 `--confirm-hash` 恢复；加 `--reject` 拒绝。命令行确认同样受角色、会话和哈希校验。
@@ -80,25 +79,35 @@ FDE_MODEL_TIMEOUT=90
 ## 3. 验证与作业
 
 ```sh
-.venv/bin/python tools/verify_product.py --live
+uv run python tools/verify_product.py --live --root .
 ```
 
 该命令实际调用你的模型，并启动独立的临时端口标签系统，测试原有分析、澄清、缺数据、只读、HTTP 动作、幂等和撤销，并增加退款说明、文字选择日期、按钮选择日期、拒绝后更换目标，共 11 项；生成环境、模型基线、运行证据及 trace。验证动作只操作独立教学数据库。复测前先备份 `artifacts/w01/` 中的上一轮证据，或另解压一份工程再运行；`--home` 只改变运行数据库位置，不改变证据输出目录。
 
 本次 W01 实际结果：11 项全部 PASS；`model_baseline.json` 记录 9 次模型运行、0 失败；`runtime_evidence.json` 记录 11 个 case、全部 passed。
 
-基础评估默认 Promptfoo 0.122.2，需要 Node.js 22.22.0 或更高版本；macOS 需要 12 或更高版本，macOS 11 的安装方法见 `evals/README.md`。从 `evals/` 按 `evals/README.md` 执行评估，完成后回到工程根目录：
+基础评估默认 Promptfoo 0.122.2，需要 Node.js 22.22.0 或更高版本；macOS 需要 12 或更高版本，macOS 11 的安装方法见 `evals/README.md`。Python 侧依赖已由 `uv sync --frozen` 安装。从 `evals/` 执行：
 
 ```sh
-.venv/bin/python tools/finalize_evaluation.py
-.venv/bin/python tools/check_product.py --root .
+cd evals
+npx --yes promptfoo@0.122.2 eval --config promptfooconfig.yaml --no-cache -j 1 --output ../artifacts/w01/promptfoo-results.json
+cd ..
+```
+
+`evals/promptfooconfig.yaml` 当前配置为 Windows 的 `../.venv/Scripts/python.exe`；macOS/Linux 请改为 `../.venv/bin/python`。
+
+完成后回到工程根目录，回填评估状态并运行 checker：
+
+```sh
+uv run python tools/finalize_evaluation.py
+uv run python tools/check_product.py --root .
 ```
 
 自行填写 `artifacts/w01/product_fit_gap.json` 与 `docs/w01/project_assessment.md`。检查器要求四份 JSON、立项报告和所引用证据，初始包不预填答案或教师运行结果。结构检查和哈希校验不代替真实行为重跑与人工 rubric。
 
 本次交付：`artifacts/w01/product_fit_gap.json`（5 条）、`docs/w01/project_assessment.md`、`docs/w01/implementation_notes.md`、`docs/w01/interview_shen_20261020.md`；Promptfoo 7/7 通过。
 
-回归测试：`.venv/bin/python -m pytest tests/test_product_v2.py tests/test_product_interaction.py`。固定回复用于验证确定性机制，测试通过不能代替真实模型验证。
+回归测试：`uv run python -m pytest tests/test_product_v2.py tests/test_product_interaction.py`。固定回复用于验证确定性机制，测试通过不能代替真实模型验证。
 
 ## 4. 扩展与自主实现
 
