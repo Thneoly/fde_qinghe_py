@@ -1,0 +1,167 @@
+{
+  "contract_version": "w01-0.2.1",
+  "product_version": "0.2.0-w1",
+  "capability_matrix_version": "w1-capabilities-0.2.0",
+  "items": [
+    {
+      "id": "GAP-001",
+      "request": "解决会员复购率连续四个季度下滑的问题，让复购率止跌回升；前提是先明确复购率的计算口径、统计周期和下滑范围。",
+      "category": "待判断",
+      "capability_ids": [
+        "CAP-006",
+        "CAP-004",
+        "CAP-003"
+      ],
+      "evidence_status": "reported",
+      "evidence": [
+        {
+          "source": "01_沈总立项邮件.md（MAIL-W01-001）",
+          "locator": "正文第1段（第11行）",
+          "note": "客户称复购率连续四个季度下滑，希望解决复购下滑问题；邮件没有公式、分子分母、统计周期、时间序列或跌幅，只能记为发起人转述。"
+        },
+        {
+          "source": "docs/w01/interview_shen_20261020.md（访谈记录）",
+          "locator": "MSG-00604、MSG-00614",
+          "note": "沈总明确说复购率计算口径给不了准数，下滑起点、门店/人群分布需问运营和门店；并要求下次先谈清口径和范围、别只带结论。"
+        },
+        {
+          "source": "artifacts/w01/evidence/analysis.json",
+          "locator": "observations[0].result.semantics.spend（metric_id=sample.net_spend.v1）",
+          "note": "样例口径是按会员/时间窗汇总的已支付减退款金额，不是复购人数或订单占比；证明产品可做金额比较，不证明可计算青禾复购率。"
+        }
+      ],
+      "next_step": "W2 找小林确认复购率公式、分子/分母、统计周期、活跃定义、渠道与门店范围、退款/取消/跨店/身份合并/cohort 规则，并要一页样例计算；找老周取 4 个季度脱敏汇总和字段说明。FDE 形成“青禾复购率 vs sample.net_spend.v1”对照表并手工复算；若现有语义无法表达，再判定为客户配置或产品缺口。"
+    },
+    {
+      "id": "GAP-002",
+      "request": "面向约 80 万活跃会员，帮助运营识别哪些会员需要重点经营，并说明判断依据。",
+      "category": "待判断",
+      "capability_ids": [
+        "CAP-003",
+        "CAP-004",
+        "CAP-006"
+      ],
+      "evidence_status": "reported",
+      "evidence": [
+        {
+          "source": "01_沈总立项邮件.md（MAIL-W01-001）",
+          "locator": "正文第2段（第13行）",
+          "note": "沈总称有 80 万活跃会员，希望助手帮运营识别需要重点经营的人；未定义“活跃”“重点经营”，该数字只能是管理口径，不是已核实数据集规模或名单规模。"
+        },
+        {
+          "source": "docs/w01/interview_shen_20261020.md（访谈记录）",
+          "locator": "MSG-00604、MSG-00606",
+          "note": "沈总明确“活跃口径我现在给不了准数”，运营团队用什么数据、耗时多久、如何跟进需直接问小林和门店。"
+        },
+        {
+          "source": "artifacts/w01/evidence/analysis.json",
+          "locator": "observations[1] compare_spending（status=partial；declining_members；missing_coverage_stores）",
+          "note": "样例按净消费下降≥20%识别出 M001/M004/M007，S03 因 8 月缺覆盖未计入；3 人只来自 S01/S02。支持规则型比较，不支持全门店完整识别，更不能套到青禾。"
+        },
+        {
+          "source": "product/API.md",
+          "locator": "“数据”节（9 位会员、14 条订单、3 家门店、2026 年 7–8 月）",
+          "note": "样例规模与青禾 80 万会员、约 400 家门店不同量级；不能据此做规模、性能或覆盖率承诺。"
+        }
+      ],
+      "next_step": "W2 找小林定义“重点经营”规则（复购、RFM、流失预警、tenure、门店/渠道）、活跃口径、名单规模与运营容量；找老周确认可用字段、历史深度和 4 个季度数据。先取 1–2 家门店或 3–6 个月脱敏样本复跑同一规则，由小林逐条复核命中/误报；据此决定客户配置还是新增指标。"
+    },
+    {
+      "id": "GAP-003",
+      "request": "识别出重点会员后，直接给小林可执行的运营建议，避免再让她整理一套表。",
+      "category": "产品已有",
+      "capability_ids": [
+        "CAP-001",
+        "CAP-003",
+        "CAP-006"
+      ],
+      "evidence_status": "reported",
+      "evidence": [
+        {
+          "source": "01_沈总立项邮件.md（MAIL-W01-001）",
+          "locator": "正文第2段（第13行）",
+          "note": "客户原话是“最好能直接给小林一些运营建议，别又让她多整理一套表”；支持建议需求，不支持已可嵌入流程或执行触达。"
+        },
+        {
+          "source": "docs/w01/interview_shen_20261020.md（访谈记录）",
+          "locator": "MSG-00606",
+          "note": "沈总说助手要接哪一段尚未确定，范围与提升幅度也没定，需先把依据谈清楚。"
+        },
+        {
+          "source": "artifacts/w01/evidence/analysis.json",
+          "locator": "result.recommendations 与 result.limitations",
+          "note": "样例为 M001/M004/M007 生成 suggestion 和 rationale，金额引用工具 evidence_id，并写明不承诺召回效果；建议的业务价值和下降原因仍需人工核实。"
+        },
+        {
+          "source": "product/API.md",
+          "locator": "“产品交互入口”节",
+          "note": "产品页面仅本机单人使用，没有任务分派、CRM 写入、跟进状态或多人协作；“不新增一套表”尚未验证。"
+        }
+      ],
+      "next_step": "W2 让小林用样例建议做业务评审，记录可用/不可用与缺失字段；再取 20–50 个脱敏会员做人工对照，统计采纳率与错误类型；跟岗记录她当前的名单来源、分配、跟进、复盘与耗时；找陈姐确认门店如何接收和执行。据结果决定客户配置或产品缺口。"
+    },
+    {
+      "id": "GAP-004",
+      "request": "希望三个月看到效果，并能就项目进展向董事会交代；具体验收口径和提升幅度尚未确定。",
+      "category": "暂不承诺",
+      "capability_ids": [],
+      "evidence_status": "reported",
+      "evidence": [
+        {
+          "source": "01_沈总立项邮件.md（MAIL-W01-001）",
+          "locator": "正文第1段（第11行）",
+          "note": "“三个月能看到效果，也好向董事会有个交代”是发起人的期望和时间压力；邮件没有验收标准、提升幅度或董事会节点，不能写成交付承诺。"
+        },
+        {
+          "source": "docs/w01/interview_shen_20261020.md（访谈记录）",
+          "locator": "MSG-00608",
+          "note": "沈总明确三个月是希望看到效果的时间点、不是保证；没有确认的验收口径，提升幅度和交付范围也还没定。"
+        },
+        {
+          "source": "docs/w01/interview_shen_20261020.md（访谈记录）",
+          "locator": "MSG-00610、MSG-00618",
+          "note": "董事会时间、决策内容、材料、审批流程与最终拍板人均未确认。"
+        },
+        {
+          "source": "product/capabilities.json",
+          "locator": "CAP-005",
+          "note": "CAP-005 是 Promptfoo 评估与 trace，只能衡量 Agent 行为、步骤和成本，不能计算或保证业务 KPI。"
+        }
+      ],
+      "next_step": "不承诺三个月效果或任何提升幅度。W2 找王经理确认预算范围、采购/合同流程、审批链与最终拍板人；找小林建立至少 4 个季度基线；待口径确定后，由沈总/王经理确认成功与止损条件，再形成带检查点的验收说明。"
+    },
+    {
+      "id": "GAP-005",
+      "request": "让助手基于青禾自己的会员、订单和门店数据工作（推断自“尽快用起来”与“系统情况找老周”，非客户原话）。",
+      "category": "系统适配",
+      "capability_ids": [
+        "CAP-004",
+        "CAP-008"
+      ],
+      "evidence_status": "unknown",
+      "evidence": [
+        {
+          "source": "01_沈总立项邮件.md（MAIL-W01-001）",
+          "locator": "正文第1段（第11行）、第3段（第15行）",
+          "note": "“尽快用起来”与“系统数据找老周”可合理推断需要客户数据，但客户没有明确要求 W1 全量接入，也未给出系统清单、字段或访问方式。"
+        },
+        {
+          "source": "docs/w01/interview_shen_20261020.md（访谈记录）",
+          "locator": "MSG-00616",
+          "note": "沈总说数据能否出公司、哪些系统不能动、门店负担怎么控“还没有定死的口径，可以谈”；不能写成客户已确认的约束。"
+        },
+        {
+          "source": "02_公司与项目协作关系.md（BRIEF-W01-001）",
+          "locator": "第7行",
+          "note": "产品尚未接入青禾数据和业务系统；本周没有完整会员明细、指标定义、已批准预算或签署的交付范围。"
+        },
+        {
+          "source": "product/API.md",
+          "locator": "“数据”节",
+          "note": "样例只有 9 位会员、14 条订单、3 家门店、2026 年 7–8 月；没有 80 万会员、约 400 家门店、跨渠道订单、身份合并、退款/取消或覆盖矩阵证据。"
+        }
+      ],
+      "next_step": "W2 找老周要会员/订单/退款/门店数据字典、系统清单、主键与身份合并规则、按门店/月覆盖矩阵、空值/重复/异常说明、历史深度与日均增量、访问与安全条件、数据能否出公司、部署与审计要求；并请王经理/合规书面确认分类分级、脱敏、留存与 DPA。先取 1–2 家门店或 3–6 个月脱敏样本做导入、口径与规模验证；合规书面通过前不接触生产数据。"
+    }
+  ]
+}

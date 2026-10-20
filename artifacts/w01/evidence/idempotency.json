@@ -1,0 +1,20 @@
+{
+  "id": "4aef912a-463c-4e20-9cb8-a214fef2b3f7",
+  "session": "8b02a561-4eb3-44de-bb0b-74fa24b89599",
+  "payload": {
+    "member_id": "M001",
+    "tag": "recall_review"
+  },
+  "hash": "e6c9f74a5271347a1b5e3184eb9e648e9cdd0cbcbc691d28e6758e2b0c5c8890",
+  "status": "applied",
+  "result": {
+    "action_id": "4aef912a-463c-4e20-9cb8-a214fef2b3f7",
+    "status": "applied",
+    "payload": {
+      "member_id": "M001",
+      "tag": "recall_review"
+    },
+    "label_active": true,
+    "label_version": 3
+  }
+}

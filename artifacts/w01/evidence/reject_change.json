@@ -1,0 +1,284 @@
+{
+  "product_version": "0.2.0-w1",
+  "runtime_revision": "w01-runtime-20260922",
+  "session_id": "4629f457-babc-4600-92a9-819e437bfaea",
+  "model_mode": "live",
+  "model_name": "deepseek-v4.1-flash",
+  "prompt_sha256": "051286bc27083b1f3cd9201ebcd09030830ec3a06401197a0adaa0f1003fcddd",
+  "status": "rejected",
+  "result": {
+    "status": "rejected",
+    "summary": "已拒绝这份标签草案，未执行本次添加操作。你可以继续提出新的要求。",
+    "evidence_ids": [
+      "0515ca8a-0a20-4c13-b0f7-3e5a9ae30005"
+    ]
+  },
+  "observations": [
+    {
+      "name": "prepare_tag",
+      "result": {
+        "status": "awaiting_approval",
+        "draft": {
+          "id": "0515ca8a-0a20-4c13-b0f7-3e5a9ae30005",
+          "session": "4629f457-babc-4600-92a9-819e437bfaea",
+          "payload": {
+            "member_id": "M004",
+            "tag": "recall_review"
+          },
+          "hash": "009ebdc71322fa4f998f0079dd613ebc2d9f45c722eba0dd2edadf9115a3e3dd",
+          "status": "draft",
+          "result": null
+        }
+      },
+      "call_id": "call_00_o9f8411fn6oy1c9gw6qrm9n2"
+    },
+    {
+      "name": "tag_rejection",
+      "result": {
+        "id": "0515ca8a-0a20-4c13-b0f7-3e5a9ae30005",
+        "session": "4629f457-babc-4600-92a9-819e437bfaea",
+        "payload": {
+          "member_id": "M004",
+          "tag": "recall_review"
+        },
+        "hash": "009ebdc71322fa4f998f0079dd613ebc2d9f45c722eba0dd2edadf9115a3e3dd",
+        "status": "rejected",
+        "result": null
+      }
+    }
+  ],
+  "steps": 1,
+  "output_repairs": 0,
+  "usage": {
+    "prompt_tokens": 458,
+    "completion_tokens": 193,
+    "total_tokens": 651
+  },
+  "trace_id": "aaead19d2f9bbfb9830de39f421e578e",
+  "scenario": "reject_change",
+  "scenario_passed": true,
+  "checks": {
+    "first_draft": true,
+    "pending_guard": true,
+    "terminal_rejection": true,
+    "no_remote_action": true,
+    "changed_target": true,
+    "second_rejection": true,
+    "zero_writes": true
+  },
+  "rounds": [
+    {
+      "product_version": "0.2.0-w1",
+      "runtime_revision": "w01-runtime-20260922",
+      "session_id": "4629f457-babc-4600-92a9-819e437bfaea",
+      "model_mode": "live",
+      "model_name": "deepseek-v4.1-flash",
+      "prompt_sha256": "051286bc27083b1f3cd9201ebcd09030830ec3a06401197a0adaa0f1003fcddd",
+      "status": "awaiting_approval",
+      "result": {},
+      "observations": [
+        {
+          "name": "prepare_tag",
+          "result": {
+            "status": "awaiting_approval",
+            "draft": {
+              "id": "aa8619f5-5ef0-43ea-94b4-4c791294255f",
+              "session": "4629f457-babc-4600-92a9-819e437bfaea",
+              "payload": {
+                "member_id": "M001",
+                "tag": "recall_review"
+              },
+              "hash": "4c1517355814776fa97c332d9c77c4731c18f1350bb12586151bce7930989923",
+              "status": "draft",
+              "result": null
+            }
+          },
+          "call_id": "call_00_bw7rovp0t276jmx1u39yktcd"
+        }
+      ],
+      "steps": 1,
+      "output_repairs": 0,
+      "usage": {
+        "prompt_tokens": 85,
+        "completion_tokens": 112,
+        "total_tokens": 197
+      },
+      "trace_id": "40d08a260b412cdb5b12de7b1bf0d76a",
+      "confirmation": {
+        "kind": "tag_confirmation",
+        "draft_id": "aa8619f5-5ef0-43ea-94b4-4c791294255f",
+        "draft_hash": "4c1517355814776fa97c332d9c77c4731c18f1350bb12586151bce7930989923",
+        "payload": {
+          "member_id": "M001",
+          "tag": "recall_review"
+        },
+        "message": "确认后会真实调用本地样例标签 API。"
+      }
+    },
+    {
+      "product_version": "0.2.0-w1",
+      "runtime_revision": "w01-runtime-20260922",
+      "session_id": "4629f457-babc-4600-92a9-819e437bfaea",
+      "model_mode": "live",
+      "model_name": "deepseek-v4.1-flash",
+      "prompt_sha256": "051286bc27083b1f3cd9201ebcd09030830ec3a06401197a0adaa0f1003fcddd",
+      "status": "rejected",
+      "result": {
+        "status": "rejected",
+        "summary": "已拒绝这份标签草案，未执行本次添加操作。你可以继续提出新的要求。",
+        "evidence_ids": [
+          "aa8619f5-5ef0-43ea-94b4-4c791294255f"
+        ]
+      },
+      "observations": [
+        {
+          "name": "prepare_tag",
+          "result": {
+            "status": "awaiting_approval",
+            "draft": {
+              "id": "aa8619f5-5ef0-43ea-94b4-4c791294255f",
+              "session": "4629f457-babc-4600-92a9-819e437bfaea",
+              "payload": {
+                "member_id": "M001",
+                "tag": "recall_review"
+              },
+              "hash": "4c1517355814776fa97c332d9c77c4731c18f1350bb12586151bce7930989923",
+              "status": "draft",
+              "result": null
+            }
+          },
+          "call_id": "call_00_bw7rovp0t276jmx1u39yktcd"
+        },
+        {
+          "name": "tag_rejection",
+          "result": {
+            "id": "aa8619f5-5ef0-43ea-94b4-4c791294255f",
+            "session": "4629f457-babc-4600-92a9-819e437bfaea",
+            "payload": {
+              "member_id": "M001",
+              "tag": "recall_review"
+            },
+            "hash": "4c1517355814776fa97c332d9c77c4731c18f1350bb12586151bce7930989923",
+            "status": "rejected",
+            "result": null
+          }
+        }
+      ],
+      "steps": 1,
+      "output_repairs": 0,
+      "usage": {
+        "prompt_tokens": 85,
+        "completion_tokens": 112,
+        "total_tokens": 197
+      },
+      "trace_id": "c0e3fc08d3fb98691988232d6c88805d"
+    },
+    {
+      "product_version": "0.2.0-w1",
+      "runtime_revision": "w01-runtime-20260922",
+      "session_id": "4629f457-babc-4600-92a9-819e437bfaea",
+      "model_mode": "live",
+      "model_name": "deepseek-v4.1-flash",
+      "prompt_sha256": "051286bc27083b1f3cd9201ebcd09030830ec3a06401197a0adaa0f1003fcddd",
+      "status": "awaiting_approval",
+      "result": {},
+      "observations": [
+        {
+          "name": "prepare_tag",
+          "result": {
+            "status": "awaiting_approval",
+            "draft": {
+              "id": "0515ca8a-0a20-4c13-b0f7-3e5a9ae30005",
+              "session": "4629f457-babc-4600-92a9-819e437bfaea",
+              "payload": {
+                "member_id": "M004",
+                "tag": "recall_review"
+              },
+              "hash": "009ebdc71322fa4f998f0079dd613ebc2d9f45c722eba0dd2edadf9115a3e3dd",
+              "status": "draft",
+              "result": null
+            }
+          },
+          "call_id": "call_00_o9f8411fn6oy1c9gw6qrm9n2"
+        }
+      ],
+      "steps": 1,
+      "output_repairs": 0,
+      "usage": {
+        "prompt_tokens": 373,
+        "completion_tokens": 81,
+        "total_tokens": 454
+      },
+      "trace_id": "bc521fcb6e5e8f045995022995512140",
+      "confirmation": {
+        "kind": "tag_confirmation",
+        "draft_id": "0515ca8a-0a20-4c13-b0f7-3e5a9ae30005",
+        "draft_hash": "009ebdc71322fa4f998f0079dd613ebc2d9f45c722eba0dd2edadf9115a3e3dd",
+        "payload": {
+          "member_id": "M004",
+          "tag": "recall_review"
+        },
+        "message": "确认后会真实调用本地样例标签 API。"
+      }
+    },
+    {
+      "product_version": "0.2.0-w1",
+      "runtime_revision": "w01-runtime-20260922",
+      "session_id": "4629f457-babc-4600-92a9-819e437bfaea",
+      "model_mode": "live",
+      "model_name": "deepseek-v4.1-flash",
+      "prompt_sha256": "051286bc27083b1f3cd9201ebcd09030830ec3a06401197a0adaa0f1003fcddd",
+      "status": "rejected",
+      "result": {
+        "status": "rejected",
+        "summary": "已拒绝这份标签草案，未执行本次添加操作。你可以继续提出新的要求。",
+        "evidence_ids": [
+          "0515ca8a-0a20-4c13-b0f7-3e5a9ae30005"
+        ]
+      },
+      "observations": [
+        {
+          "name": "prepare_tag",
+          "result": {
+            "status": "awaiting_approval",
+            "draft": {
+              "id": "0515ca8a-0a20-4c13-b0f7-3e5a9ae30005",
+              "session": "4629f457-babc-4600-92a9-819e437bfaea",
+              "payload": {
+                "member_id": "M004",
+                "tag": "recall_review"
+              },
+              "hash": "009ebdc71322fa4f998f0079dd613ebc2d9f45c722eba0dd2edadf9115a3e3dd",
+              "status": "draft",
+              "result": null
+            }
+          },
+          "call_id": "call_00_o9f8411fn6oy1c9gw6qrm9n2"
+        },
+        {
+          "name": "tag_rejection",
+          "result": {
+            "id": "0515ca8a-0a20-4c13-b0f7-3e5a9ae30005",
+            "session": "4629f457-babc-4600-92a9-819e437bfaea",
+            "payload": {
+              "member_id": "M004",
+              "tag": "recall_review"
+            },
+            "hash": "009ebdc71322fa4f998f0079dd613ebc2d9f45c722eba0dd2edadf9115a3e3dd",
+            "status": "rejected",
+            "result": null
+          }
+        }
+      ],
+      "steps": 1,
+      "output_repairs": 0,
+      "usage": {
+        "prompt_tokens": 373,
+        "completion_tokens": 81,
+        "total_tokens": 454
+      },
+      "trace_id": "aaead19d2f9bbfb9830de39f421e578e"
+    }
+  ],
+  "model_calls": 2
+}
